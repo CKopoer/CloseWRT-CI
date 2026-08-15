@@ -179,6 +179,12 @@ jobs:
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
 
+          if [[ "$WRT_SOURCE" == "padavanonly/immortalwrt-mt798x-6.6" ]]; then
+            sed -i '/^CONFIG_PACKAGE_luci-app-homeproxy=/d; /^CONFIG_PACKAGE_luci-i18n-homeproxy-zh-cn=/d' .config
+            echo "CONFIG_PACKAGE_luci-app-homeproxy=n" >> .config
+            echo "CONFIG_PACKAGE_luci-i18n-homeproxy-zh-cn=n" >> .config
+          fi
+
           $GITHUB_WORKSPACE/Scripts/Settings.sh
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
